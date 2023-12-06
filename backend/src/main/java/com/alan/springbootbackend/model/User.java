@@ -1,8 +1,8 @@
 package com.alan.springbootbackend.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Entity
 public class User {
@@ -44,4 +44,5 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+    
 }
