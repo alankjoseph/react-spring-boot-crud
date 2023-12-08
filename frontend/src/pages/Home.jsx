@@ -1,15 +1,30 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import EditUser from "../Users/EditUser";
 function Home() {
-  const [user, setUser] = useState([]);
+  const [userData, setUserData] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [id, setId] = useState(null);
+  const openModal = (id) => {
+    setId(id);
+    setShowModal(true);
+  };
 
+  const closeModal = () => {
+    setShowModal(false);
+    getUsers();
+  };
   useEffect(() => {
     getUsers();
   }, []);
 
   const getUsers = async () => {
     const result = await axios.get("http://localhost:8080/users");
-    setUser(result.data);
+    setUserData(result.data);
+  };
+  const deleteHandler = async (id) => {
+    await axios.delete("http://localhost:8080/user/" + id);
+    getUsers();
   };
   return (
     <div className="mx-[100px] my-6 ">
@@ -36,7 +51,7 @@ function Home() {
               </tr>
             </thead>
             <tbody>
-              {user.map((user) => (
+              {userData.map((user) => (
                 <tr
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                   key={user.id}
@@ -48,14 +63,16 @@ function Home() {
                   <td className="px-6 py-4 ">
                     <button
                       type="button"
-                      className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                      onClick={() => openModal(user.id)}
+                      className="text-white bg-green-700 hover:bg-green-800 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 "
                     >
                       Edit
                     </button>
 
                     <button
                       type="button"
-                      className="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                      onClick={() => deleteHandler(user.id)}
+                      className="text-white bg-red-700 hover:bg-red-800  font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 "
                     >
                       Delete
                     </button>
@@ -66,6 +83,7 @@ function Home() {
           </table>
         </div>
       </div>
+      {showModal && <EditUser closeModal={closeModal} id={id} />}
     </div>
   );
 }

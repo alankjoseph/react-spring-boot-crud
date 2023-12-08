@@ -6,18 +6,15 @@ import AddUser from "./Users/addUser";
 function App() {
   return (
     <div className="App">
-      <Router>
-        <div className="h-screen bg-gradient-to-b from-gray-900 via-gray-700 to-black">
+      <div className="h-screen bg-gradient-to-b from-gray-900 via-gray-700 to-black">
+        <Router>
           <Navbar />
           <Routes>
-            <Route path="/" element={<Home/>} />
+            <Route path="/" element={<Home />} />
+            <Route path="/add-user" element={<AddUser />} />
           </Routes>
-          <Routes>
-            <Route path="/add-user" element={<AddUser/>} />
-          </Routes>
-         
-        </div>
-      </Router>
+        </Router>
+      </div>
     </div>
   );
 }
